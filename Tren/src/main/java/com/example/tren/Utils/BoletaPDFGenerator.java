@@ -21,7 +21,8 @@ import java.time.format.DateTimeFormatter;
 
 public class BoletaPDFGenerator {
 
-    public static void generar(ServletOutputStream out, Boleta boleta) throws Exception {
+    public static void generar(ServletOutputStream out, Boleta boleta, int tiempoLlegada
+            ,int tiempoViaje) throws Exception {
         PdfWriter writer = new PdfWriter(out);
         PdfDocument pdf = new PdfDocument(writer);
         Document doc = new Document(pdf);
@@ -72,6 +73,12 @@ public class BoletaPDFGenerator {
 
         infoCliente.addCell(cellLabel("Zona Turística:", true));
         infoCliente.addCell(cellData(boleta.getZonaturistica().getNombre()));
+
+        infoCliente.addCell(cellLabel("Tiempo hasta abordar:", true));
+        infoCliente.addCell(cellData(tiempoLlegada + " seg."));
+
+        infoCliente.addCell(cellLabel("Tiempo de viaje:", true));
+        infoCliente.addCell(cellData(tiempoViaje + " seg."));
 
         doc.add(infoCliente);
 

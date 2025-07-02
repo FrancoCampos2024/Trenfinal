@@ -84,15 +84,27 @@ public class BoletaController {
     }
 
     @GetMapping("/boleta-pdf/{id}")
-    public void generarPDF(@PathVariable int id, HttpServletResponse response) throws Exception {
+    public void generarPDF(@PathVariable int id,  HttpServletResponse response) throws Exception {
         Boleta boleta = boletaService.buscarPorId(id);
+
+        int posicionTren = trenSimulador.getPosicionActual();
+        boolean haciaAdelante = trenSimulador.getDireccion().equalsIgnoreCase("IDA");
+
+        int tiempoLlegada = estacionService.calcularTiempoLlegada(
+                posicionTren, boleta.getEstacioninicio().getOrdenEstacion(), haciaAdelante);
+
+        int tiempoViaje = estacionService.calcularTiempoViaje(
+                boleta.getEstacioninicio().getOrdenEstacion(),
+                boleta.getEstaciondestino().getOrdenEstacion(),
+                haciaAdelante,
+                posicionTren);
 
         // Configura respuesta
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=boleta_" + boleta.getId() + ".pdf");
 
         // Generar PDF
-        BoletaPDFGenerator.generar(response.getOutputStream(), boleta);
+        BoletaPDFGenerator.generar(response.getOutputStream(), boleta,tiempoLlegada,tiempoViaje);
     }
 
 }
