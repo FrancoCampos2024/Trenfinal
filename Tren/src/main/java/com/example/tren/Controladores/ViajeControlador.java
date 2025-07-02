@@ -1,6 +1,6 @@
 package com.example.tren.Controladores;
 
-
+import com.example.tren.Entidades.Boleta;
 import com.example.tren.Entidades.Estacion;
 import com.example.tren.Entidades.TrenSimulador;
 import com.example.tren.Entidades.Zonaturistica;
@@ -68,8 +68,7 @@ public class ViajeControlador {
     @GetMapping("/formulario")
     public String mostrarFormulario(Model model) {
         model.addAttribute("estaciones", estacionService.listarTodas());
+        model.addAttribute("boleta", new Boleta()); // para el th:object si lo usas
         return "formulario-viaje";
     }
-
-
 }

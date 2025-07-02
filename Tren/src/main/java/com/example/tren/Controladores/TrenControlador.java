@@ -36,6 +36,8 @@ public class TrenControlador {
         data.put("estacion1", nombre1);
         data.put("estacion2", nombre2);
         data.put("numero", String.valueOf(pos));
+        assert estacion2 != null;
+        data.put("numero2", String.valueOf(estacion2.getOrdenEstacion()));
         data.put("direccion", direccion);
         return data;
     }
